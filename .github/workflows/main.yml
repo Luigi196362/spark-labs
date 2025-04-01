@@ -41,9 +41,11 @@ jobs:
       with:
         spark-version: '3.5.3'
         hadoop-version: '3'
-
-    - run: spark-submit --version
-    - run: spark-submit --master local hello.py
+        
+    - run: wget -O dataset.csv ${{github.event.client_payload.dataseturl}}
+    - run: wget -O app.py ${{github.event.client_payload.codeurl}}
+    - run: ls -la
+    - run: spark-submit --master local app.py 
 
     - name: GIT commit and push docs
       env: 
