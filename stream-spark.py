@@ -3,17 +3,34 @@ import requests
 import pandas  as pd
 import json
 
+
 def post_spark_job(user, repo, job, token, codeurl, dataseturl):
-   # Define the API endpoint
-   url = 'https://api.github.com/repos/' + user + '/' + repo + '/dispatches'
-   # Define the data to be sent in the POST request
-   payload = {
-     "event_type": job,
-     "client_payload": {
-        "codeurl": codeurl,
-        "dataseturl": dataseturl
-      }
-   }
+    # Define the API endpoint
+    url = 'https://api.github.com/repos/' + user + '/' + repo + '/dispatches'
+    # Define the data to be sent in the POST request
+    payload = {
+      "event_type": job,
+      "client_payload": {
+          "codeurl": codeurl,
+          "dataseturl": dataseturl
+        }
+    }
+
+    headers = {
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-type': 'application/json'
+    }
+
+    st.write(url)
+    st.write(payload)
+    st.write(headers)
+
+    # Make the POST request
+    response = requests.post(url, json=payload, headers=headers)
+
+    # Display the response in the app
+    st.write(response)
 
 
 def get_spark_results(url_results):
